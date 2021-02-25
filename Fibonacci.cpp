@@ -7,6 +7,11 @@ int main()
   int current = 1;
   int N;
   int prev = -1;
+  int answer;
+  
+  cout << "Enter N: ";
+  cin >> N;
+  
   for(int i = 0; i < N; i++)
   {
      if(i < 1)
@@ -20,10 +25,7 @@ int main()
         prev = current;
         current = answer;
         cout << answer << " ";
-     }
-    return 0;
-  }
-  
+     }  
   
   return 0;   
 }
