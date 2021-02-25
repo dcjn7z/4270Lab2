@@ -4,20 +4,21 @@ using namespace std;
 
 int main()
 {
-  int current = 1;
-  int N;
+  int current = 0;
+  int input;
   int prev = -1;
   int answer;
   
-  cout << "Enter N: ";
-  cin >> N;
+  cout << "Enter to find Fibonacci number: " << endl;
+  cin >> input;
   
-  for(int i = 0; i < N; i++)
+  for(int i = 0; i <= N; i++)
   {
      if(i < 1)
      {
        cout << prev << " "; 
-       prev++; 
+       prev++;
+       current+;
      }
      else
      {
