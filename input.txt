@@ -1,0 +1,3 @@
+addiu $a0, $zero, 0
+syscall
+
