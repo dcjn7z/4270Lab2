@@ -3,12 +3,6 @@
 #include <stdint.h>
 #include <string.h>
 
-void scanInstructionID(FILE* fp, char* instructionPtr){
-	fscanf(fp,"%s",instructionPtr);
-	printf("%s\n",instructionPtr);
-	return;
-	}
-
 void addRegister(char *reg,uint32_t *numberPtr,char *regID){
 	uint32_t adder = 0;
 	if(strcmp(reg,"ze")==0){
@@ -102,54 +96,81 @@ void addTarget(int target,uint32_t *numberPtr){
 	*numberPtr = *numberPtr + target;
 }
 
-void convertFileToHex(uint32_t *numberPtr,char * instructionID,FILE* fp){
+void writeHexToFile(uint32_t hexNumber,char* outputfile){
+	FILE* fp2 = fopen(outputfile,"a");
+	if(fp2==NULL){
+		printf("Error opening output file\n");}
+	fprintf(fp2, "%08x\n",hexNumber);
+	fclose(fp2);
+	return;
+	}
+
+
+int main (int argc, char *argv[]) {
+
+	char *inputfile = argv[1];
+	char *outputfile = argv[2];
+	printf("%s\n",argv[1]);
+	printf("%s\n",argv[2]);
+
+	char instructionID[6];
+	uint32_t hexInstruction=0;
 	char rs[6],rt[6],rd[6];
 	uint32_t immed=0;
 	uint32_t target=0;
 	uint32_t sa=0;
 
-	if( strcmp(instructionID,"add")==0 ){
-		*numberPtr = *numberPtr+0x00000020;
-		fscanf(fp,"$%s, $%s, $%s",rd,rs,rt);
-		addRegister(rs,numberPtr,rs);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);}
+	FILE* fp=fopen(inputfile,"r");
+	if(fp==NULL){
+		printf("Error opening input file\n");}
 	
-	else if( strcmp(instructionID,"sll")==0 ){
-		*numberPtr = *numberPtr+0x00000000;
-		fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);
-		*numberPtr=*numberPtr +(sa<<6);
-		}
+	fscanf(fp,"%s",instructionID);
+	printf("Instruction = %s\n",instructionID);
+
+	while (strcmp(instructionID,"syscall")!=0){
+		hexInstruction=0;	
+	//**	if( strcmp(instructionID,"add")==0 ){
+			hexInstruction = hexInstruction+0x00000020;
+			fscanf(fp,"$%s, $%s, $%s",rd,rs,rt);
+			addRegister(rs,numberPtr,rs);
+			addRegister(rt,numberPtr,rt);
+			addRegister(rd,numberPtr,rd);}
 	
-	else if( strcmp(instructionID,"srl")==0 ){
-		*numberPtr = *numberPtr+0x00000002;
-		fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);
-		*numberPtr=*numberPtr+(sa<<6);}
-
-	else if( strcmp(instructionID,"sra")==0 ){
-		*numberPtr = *numberPtr+0x00000003;
-		fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);
-		*numberPtr=*numberPtr+(sa<<6);}
-
-	else if( strcmp(instructionID,"jr")==0 ){
-		*numberPtr = *numberPtr+0x00000008;
-		fscanf(fp,"$%s",rs);
-		addRegister(rs,numberPtr,rs);}
-
-	else if( strcmp(instructionID,"jalr")==0 ){
-		*numberPtr = *numberPtr+0x00000009;
-		fscanf(fp,"$%s\n,JALR $%s, $%s",rs,rd,rs);
-		addRegister(rs,numberPtr,rs);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);}
+		else if( strcmp(instructionID,"sll")==0 ){
+			hexInstruction = hexInstruction+0x00000000;
+			fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
+			addRegister(rt,numberPtr,rt);
+			addRegister(rd,numberPtr,rd);
+			*numberPtr=*numberPtr +(sa<<6);
+			}
 	
-	else if( strcmp(instructionID,"mfhi")==0 ){
+		else if( strcmp(instructionID,"srl")==0 ){
+			*numberPtr = *numberPtr+0x00000002;
+			fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
+			addRegister(rt,numberPtr,rt);
+			addRegister(rd,numberPtr,rd);
+			*numberPtr=*numberPtr+(sa<<6);}
+
+		else if( strcmp(instructionID,"sra")==0 ){
+			*numberPtr = *numberPtr+0x00000003;
+			fscanf(fp,"$%s, $%s, 0x%x",rd,rt,&sa);
+			addRegister(rt,numberPtr,rt);
+			addRegister(rd,numberPtr,rd);
+			*numberPtr=*numberPtr+(sa<<6);}
+	
+		else if( strcmp(instructionID,"jr")==0 ){
+			*numberPtr = *numberPtr+0x00000008;
+			fscanf(fp,"$%s",rs);
+			addRegister(rs,numberPtr,rs);}
+	
+		else if( strcmp(instructionID,"jalr")==0 ){
+			*numberPtr = *numberPtr+0x00000009;
+			fscanf(fp,"$%s\n,JALR $%s, $%s",rs,rd,rs);
+			addRegister(rs,numberPtr,rs);
+			addRegister(rt,numberPtr,rt);
+			addRegister(rd,numberPtr,rd);}
+		
+		else if( strcmp(instructionID,"mfhi")==0 ){
 		*numberPtr = *numberPtr+0x00000010;
 		fscanf(fp,"$%s",rd);
 		addRegister(rd,numberPtr,rd);}
@@ -309,15 +330,16 @@ void convertFileToHex(uint32_t *numberPtr,char * instructionID,FILE* fp){
 		addRegister(rs,numberPtr,rs);
 		addRegister(rt,numberPtr,rt);
 		addImmediate(immed,numberPtr);}
-	
+	**//
 	else if(strcmp(instructionID,"addiu")==0){
-		*numberPtr = *numberPtr + 0x24000000;
-		fscanf(fp, "%s, %s, %x",rt,rs,&immed);
+		hexInstruction = hexInstruction + 0x24000000;
+		fscanf(fp, "%s %s %x",rt,rs,&immed);
 		printf(" rt = %s, rs = %s, immed = %x\n",rt,rs,immed);
-		addRegister(rs,numberPtr,rs);
-		addRegister(rt,numberPtr,rt);
-		addRegister(rd,numberPtr,rd);}
-	
+		addRegister(rs,&hexNumber,rs);
+		addRegister(rt,&hexNumber,rt);
+		addRegister(rd,&hexNumber,rd);}
+
+//**	
 	else if( strcmp(instructionID,"slti")==0 ){
 		*numberPtr = *numberPtr+0x28000000;
 		fscanf(fp,"%s, %s, 0x%x",rt,rs,&immed);
@@ -385,45 +407,18 @@ void convertFileToHex(uint32_t *numberPtr,char * instructionID,FILE* fp){
 		fscanf(fp,"$%s, 0x%x",rt,&immed);
 		addRegister(rt,numberPtr,rt);
 		addImmediate(immed,numberPtr);}
+**//
 	
 	else{
 		printf("Error, invalid operation %s\n",instructionID);}
 
-}
 
-void writeHexToFile(uint32_t hexNumber,char* outputfile){
-	FILE* fp2 = fopen(outputfile,"a");
-	if(fp2==NULL){
-		printf("Error opening output file\n");}
-	fprintf(fp2, "%08x\n",hexNumber);
-	fclose(fp2);
-	return;
-	}
-
-
-int main (int argc, char *argv[]) {
-
-	char *inputfile = argv[1];
-	char *outputfile = argv[2];
-	printf("%s\n",argv[1]);
-	printf("%s\n",argv[2]);
-
-	char instructionID[6];
-	uint32_t hexInstruction=0;
-	
-	FILE* fp=fopen(inputfile,"r");
-	if(fp==NULL){
-		printf("Error opening input file\n");}
-	
-	scanInstructionID(fp,instructionID);
-
-	while (strcmp(instructionID,"syscall")!=0){
-		convertFileToHex(&hexInstruction,instructionID,fp);
 		writeHexToFile(hexInstruction,outputfile);
-		scanInstructionID(fp, instructionID);
+		fscanf(fp,"%s",instructionID);
+		printf("Instruction = %s\n",instructionID);
 		}
-
-	hexInstruction=0x0000000c;
+	}
+	uint32_t hexInstruction=0x0000000c;
 	writeHexToFile(hexInstruction,outputfile);
 	fclose(fp);
 	return 1;
