@@ -28,22 +28,24 @@ int main()
 }
 
 /*MIPS Assembly
-[0x04000000]    addiu $t0, $zero, 5 //
-[0x04000004]    addiu $t1, $zero, 3 
-[0x04000008]    addiu $t2, $zero, 6
-[0x0400000C]    addiu $t3, $zero, 8
-[0x04000010]    addiu $t4, $zero, 9
-[0x04000014]    addiu $t5, $zero, 1
-[0x04000018]    addiu $t6, $zero, 4
-[0x0400002C]    addiu $t7, $zero, 7
-[0x04000030]    addiu $t8, $zero, 2
-[0x04000034]    
-[0x04000038]    
-[0x0400003C]    
-[0x04000040]    
-[0x04000044]    
-[0x04000048]
-[0x0400004C]
-[0x04000050]
-[0x04000054]
+[0x04000000]   
+                addiu $a0, $zero, 5 //
+[0x04000004]    addiu $a1, $zero, 3 
+[0x04000008]    addiu $a2, $zero, 6
+[0x0400000C]    addiu $a3, $zero, 8
+[0x04000010]    addiu $a4, $zero, 9
+[0x04000014]    addiu $a5, $zero, 1
+[0x04000018]    addiu $a6, $zero, 4
+[0x0400002C]    addiu $a7, $zero, 7
+[0x04000030]    addiu $a8, $zero, 2
+[0x04000034]    lui   $t1, 0x1001 //set base 0x10010000
+                sw    $a0, $t1,0
+[0x04000038]    sw    $a1, $t1,4
+[0x0400003C]    sw    $a2, $t1,8
+[0x04000040]    sw    $a3, $t1,12
+[0x04000044]    sw    $a4, $t1,16
+[0x04000048]    sw    $a5, $t1,20
+[0x0400004C]    sw    $a6, $t1,24
+[0x04000050]    sw    $a7, $t1,28
+[0x04000054]    sw    $a8, $t1,32
 © 2021 GitHub, Inc.
