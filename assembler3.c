@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-void addRegister(char *reg,uint32_t *numberPtr,char *regID){
+void addRegister(char *reg,int32_t *numberPtr,char *regID){
 	uint32_t adder = 0;
 	reg=strtok(reg,"$, ");
 	printf("%s\n",reg);
@@ -92,16 +92,16 @@ void addRegister(char *reg,uint32_t *numberPtr,char *regID){
 
 	return;
 }
-void addImmediate(char* immediate,uint32_t *numberPtr){
+void addImmediate(char* immediate,int32_t *numberPtr){
 	if (strcmp(immediate,"0")==0){
 		*numberPtr = *numberPtr + atoi(immediate);}
 	else{
 		immediate=strtok(immediate,"0x");
 		printf("immediate = %s\n",immediate);
-		uint32_t immed = (uint32_t)strtol(immediate,NULL,16);
+		int32_t immed = (int32_t)strtol(immediate,NULL,16);
 		*numberPtr=*numberPtr+immed;}
 }
-void addTarget(char *target,uint32_t *numberPtr){
+void addTarget(char *target,int32_t *numberPtr){
 	if (strcmp(target,"0")==0){
 		*numberPtr = *numberPtr + atoi(target);}
 	
@@ -112,7 +112,7 @@ void addTarget(char *target,uint32_t *numberPtr){
 		*numberPtr= *numberPtr + targ;}
 }
 
-void writeHexToFile(uint32_t hexNumber,char* outputfile){
+void writeHexToFile(int32_t hexNumber,char* outputfile){
 	FILE* fp2 = fopen(outputfile,"a");
 	if(fp2==NULL){
 		printf("Error opening output file\n");}
@@ -130,7 +130,7 @@ int main (int argc, char *argv[]) {
 	printf("%s\n",argv[2]);
 
 	char instructionID[6];
-	uint32_t hexInstruction=0;
+	int32_t hexInstruction=0;
 	char rs[6],rt[6],rd[6];
 	char immed[18];
 	char target[28];
