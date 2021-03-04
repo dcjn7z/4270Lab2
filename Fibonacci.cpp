@@ -8,7 +8,7 @@ int main()
   int prev = -1;
   int answer = 0;
   int zero = 0;
-  int one = 1;
+
   int input;
   
   
@@ -37,7 +37,7 @@ int main()
 
 /* MIPS Assembly
 [0x04000000]    addiu $a0, $zero, 0 //set current to 0
-[0x04000004]    addiu $a1, $zero, 0 //set prev to -1
+[0x04000004]    addiu $a1, $zero, 0x //set prev to -1
 [0x04000008]    addiu $a2, $zero, 0 //set answer to 0
 [0x0400000C]    addiu $a3, $zero, 0 //set zero to 0
 [0x04000010]    addiu $a4, $zero, 0 //set one to 1
