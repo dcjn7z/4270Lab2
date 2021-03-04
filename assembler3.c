@@ -5,7 +5,7 @@
 
 void addRegister(char *reg,int32_t *numberPtr,char *regID){
 	uint32_t adder = 0;
-	reg=strtok(reg,"$, ");
+	reg=strtok(reg,"$,() ");
 	printf("%s\n",reg);
 
 	if(strcmp(reg,"zero")==0){
@@ -108,8 +108,9 @@ void addTarget(char *target,int32_t *numberPtr){
 	else{
 		target=strtok(target,"0x");
 		printf("target = %s\n",target);
-		uint32_t targ = (uint32_t)strtol(target,NULL,16);
+		int32_t targ = (int32_t)strtol(target,NULL,16);
 		*numberPtr= *numberPtr + targ;}
+
 }
 
 void writeHexToFile(int32_t hexNumber,char* outputfile){
@@ -143,7 +144,7 @@ int main (int argc, char *argv[]) {
 	fscanf(fp,"%s",instructionID);
 	printf("Instruction = %s\n",instructionID);
 
-	while (strcmp(instructionID,"syscall")!=0){
+	while (feof(fp)==0){
 		hexInstruction=0;	
 		
 		 if(strcmp(instructionID,"addiu")==0){
@@ -389,42 +390,51 @@ int main (int argc, char *argv[]) {
 
 		else if( strcmp(instructionID,"lb")==0 ){
 			hexInstruction = hexInstruction+0x80000000;
-			fscanf(fp,"%s %s",rt,immed);
+			fscanf(fp,"%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs,&hexInstruction, "rs");}
 
 		else if( strcmp(instructionID,"lh")==0 ){
 			hexInstruction = hexInstruction+0x84000000;
-			fscanf(fp,"%s %s",rt,immed);
+			fscanf(fp,"%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs,&hexInstruction, "rs");}
 
 		else if( strcmp(instructionID,"lw")==0 ){
 			hexInstruction = hexInstruction+0x8c000000;
-			fscanf(fp,"%s %s",rt,immed);
+			fscanf(fp,"%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs,&hexInstruction,"rs");}
 
 		else if( strcmp(instructionID,"sb")==0 ){
 			hexInstruction = hexInstruction+0xa0000000;
-			fscanf(fp,"$%s %s",rt,immed);
+			fscanf(fp,"$%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs, &hexInstruction, "rs");}
 
 		else if( strcmp(instructionID,"sh")==0 ){
 			hexInstruction = hexInstruction+0xa4000000;
-			fscanf(fp,"$%s %s",rt,immed);
+			fscanf(fp,"$%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs,&hexInstruction,"rs");}
 
 		else if( strcmp(instructionID,"sw")==0 ){
 			hexInstruction = hexInstruction+0xa8000000;
-			fscanf(fp,"%s %s",rt,immed);
+			fscanf(fp,"%s %s %s",rt,immed,rs);
 			addRegister(rt,&hexInstruction,"rt");
-			addImmediate(immed,&hexInstruction);}
+			addImmediate(immed,&hexInstruction);
+			addRegister(rs,&hexInstruction,"rs");}
+		
+		else if( strcmp(instructionID,"syscall")==0){
+			hexInstruction = 0x0000000c;}
 	
-	else{
-		printf("Error, invalid operation %s\n",instructionID);}
+		else{
+			printf("Error, invalid operation %s\n",instructionID);}
 
 
 		writeHexToFile(hexInstruction,outputfile);
@@ -432,8 +442,6 @@ int main (int argc, char *argv[]) {
 		printf("Instruction = %s\n",instructionID);
 	}
 
-	hexInstruction=0x0000000c;
-	writeHexToFile(hexInstruction,outputfile);
 	fclose(fp);
 	return 1;
 }
