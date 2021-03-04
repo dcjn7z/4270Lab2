@@ -29,16 +29,16 @@ addiu $a3, $zero, 0
                 
 lw    $t0,  0 ($a1)
 lw    $t1,  0x4 ($a1)
-sub   $f4, $t0, $t1
-bgez  $f4, 0x14
+sub   $s4, $t0, $t1
+bgez  $s4, 0x14
 addiu $a0, $t0, 0
 addiu $t0, $t1, 0
 addiu $t1, $a0, 0
 addiu $a3, $a3, 0x1
-sub   $f4, $a2, $t9
-sub   $f5, $f4, $a3
-bltz  $f5, 0x28
+sub   $s4, $a2, $t9
+sub   $s5, $s4, $a3
+bltz  $s5, 0x28
 addiu $t9, $t9, 0x1
-bltz  $f4, 0x34   
+bltz  $s4, 0x34   
 addiu $v0, $zero, 0x8
 syscall
