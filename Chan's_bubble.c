@@ -39,6 +39,8 @@ int main()
 [0x0400002C]    addiu $a7, $zero, 7
 [0x04000030]    addiu $a8, $zero, 2
 [0x04000034]    addiu $a9, $zero, 0 // set temp to 0
+                addiu $a14, $zero, 0// set n to 0
+                
                 
                 lui   $t1, 0x1001 //set base 0x10010000
                 sw    $a0, $t1,0
@@ -51,6 +53,7 @@ int main()
 [0x04000050]    sw    $a7, $t1,28
 [0x04000054]    sw    $a8, $t1,32
                 sw    $a9, $t1,36 //store temp 
+                sw    $a14,$t1,40 //store n
                 
                 addiu $a10, $zero, 0x n-1?? // upper bound for i < n-1
                 addiu $a11, $zero, 0x0 // i is initialize to 0
