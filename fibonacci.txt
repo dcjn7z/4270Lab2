@@ -4,7 +4,7 @@ lui $zero, 0x0000
 addiu $a0, $zero, 0
 addiu $a2, $zero, 0
 addiu $a3, $zero, 0
-addiu $a4, $zero, 1
+addiu $a4, $zero, 0x1
 lui   $t1, 0x1001
 sw    $a1, 0x0000 ($t1)
 sw    $a0, 0x0004 ($t1)
