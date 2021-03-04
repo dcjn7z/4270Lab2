@@ -441,7 +441,7 @@ int main (int argc, char *argv[]) {
 		fscanf(fp,"%s",instructionID);
 		printf("Instruction = %s\n",instructionID);
 	}
-
+	
 	fclose(fp);
 	return 1;
 }
