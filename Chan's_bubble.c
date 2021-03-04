@@ -72,7 +72,7 @@ sub   $f4, $a2, $t9 // 8 - i
 sub   $f5, $f4, $a3 // (8 -i) - j
 bltz  $f5, 0x28
 addiu $t9, $t9, 0x1 // increment i
-bltz  $f4, 
+bltz  $f4, 0x4
 addiu $v0, $zero, 0x8
 syscall
               
