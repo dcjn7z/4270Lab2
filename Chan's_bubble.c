@@ -3,13 +3,13 @@
 int main()
 {
     
-    int array[] = {5,3,6,8,9,1,4,7,2};
-    int n = 8;
+    int array[] = {5,3,6,8,9,1,4,7,2,10};
+    int n = 9;
     
     
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
     {
-        for(int j = 0; j < 8 - i; j++)
+        for(int j = 0; j < 9 - i; j++)
         {
             if(array[j] > array[j+1])
             {
@@ -38,6 +38,7 @@ addiu $t5, $zero, 0x1
 addiu $t6, $zero, 0x4
 addiu $t7, $zero, 0x7
 addiu $t8, $zero, 0x2
+addiu $f6, $zero, 0xA
 addiu $a0, $zero, 0x0 // set temp to 0
 addiu $a2, $zero, 0x8// set n to 8
                         
@@ -51,8 +52,9 @@ sw    $t5, $a1,20
 sw    $t6, $a1,24
 sw    $t7, $a1,28
 sw    $t8, $a1,32
-sw    $a0, $a1,36 //store temp 
-sw    $a2,$a1,40 //store n
+sw    $f6, $a1,36
+sw    $a0, $a1,40 //store temp 
+sw    $a2,$a1,44 //store n
 
 addiu $t8, $zero, 0x8 // upper bound for i < 8
 addiu $t9, $zero, 0x0 // i is initialize to 0
