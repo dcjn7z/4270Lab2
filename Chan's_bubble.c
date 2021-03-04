@@ -43,7 +43,7 @@ int main()
                 
                 
                 lui   $t1, 0x1001 //set base 0x10010000
-                sw    $a0, $t1,0
+                sw    $a0, 0x0000 ($t1)
 [0x04000038]    sw    $a1, $t1,4
 [0x0400003C]    sw    $a2, $t1,8
 [0x04000040]    sw    $a3, $t1,12
@@ -60,11 +60,10 @@ int main()
                 
                 addiu $a13, $zero, 0x0 // j is initialize to 0
                 
-                lw    $a0,  $t1, 0  //load first element of array
+                lw    $a0,  0x0000 ($t1)  //load first element of array
                 lw    $a1,  $t1, 4  //load second element of array
-                
-                addiu $a16, $a1, 0x0 // register second element of array to $a16
-                bgez  $a1
+                sub   $a16, $a0, $a1 // $a16 = first element - second element
+                bgez  $a16, 0x // jump to increment j
                 
                 addiu $a13, $zero, 0x0 // j is initialize to 0
                 
