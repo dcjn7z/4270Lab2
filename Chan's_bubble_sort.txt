@@ -1,0 +1,46 @@
+addiu $t0, $zero, 0x5 
+addiu $t1, $zero, 0x3 
+addiu $t2, $zero, 0x6
+addiu $t3, $zero, 0x8
+addiu $t4, $zero, 0x9
+addiu $t5, $zero, 0x1
+addiu $t6, $zero, 0x4
+addiu $t7, $zero, 0x7
+addiu $t8, $zero, 0x2
+addiu $f6, $zero, 0xA
+addiu $a0, $zero, 0 // set temp to 0
+addiu $a2, $zero, 0x9// set n to 8
+
+lui   $a1, 0x1001
+sw    $t0, 0 ($a1)
+sw    $t1, 0x4 ($a1)
+sw    $t2, 0x8 ($a1)
+sw    $t3, 0xc ($a1)
+sw    $t4, 0x10 ($a1)
+sw    $t5, 0x14 ($a1)
+sw    $t6, 0x18 ($a1)
+sw    $t7, 0x1c ($a1)
+sw    $t8, 0x20 ($a1)
+sw    $t9, 0x24 ($a1)
+sw    $a0, 0x28 ($a1)
+sw    $a2, 0x2c ($a1)
+
+addiu $s0, $zero, 0x9
+addiu $s1, $zero, 0
+addiu $a3, $zero, 0
+addi	$t1, $t1, 0x4
+sw	  $t2, $t1, 0x0
+lw    $t0, 0 ($a1)
+lw    $t1,  0x4 ($a1)
+sub   $s4, $t0, $t1	
+bgez  $s4, 0x14
+addiu $a0, $t0, 0x0 // temp = array[j]
+addiu $t0, $t1, 0x0 // array[j] = array[j+1]
+addiu $t1, $a0, 0x0 // array[j+1] = temp
+addiu $a3, $a3,0x1 // increment j
+sub   $f4, $a2, -0x1 // 8 – i
+bgtz  $f4, 0x8028
+addiu $s1, $s1, 0x1
+bgtz  $s4, 0x8034
+addiu $v0, $zero, 0x8
+syscall
